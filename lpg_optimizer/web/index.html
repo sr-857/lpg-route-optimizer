@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LPG Smart Route Optimizer</title>
+  <meta name="description" content="Optimize LPG delivery routes with OR-Tools and visualize results." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container">
+    <div class="nav">
+      <div class="brand">LPG Optimizer</div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#get-started">Get started</a>
+        <a href="../README.md" target="_blank" rel="noopener">Docs</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-text">
+        <h1>Smarter LPG Delivery Routes</h1>
+        <p>Reduce distance, time, and cost using Google OR-Tools. Visualize before vs after routes and track KPIs in a simple dashboard.</p>
+        <div class="cta">
+          <a class="btn primary" href="http://localhost:8501" target="_blank" rel="noopener">Launch Dashboard</a>
+          <a class="btn" href="#get-started">How to run</a>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi">
+            <div class="kpi-label">Distance reduction</div>
+            <div class="kpi-value" id="kpi-distance">—</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Time reduction</div>
+            <div class="kpi-value" id="kpi-time">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="hero-map.svg" alt="Map visualization placeholder" />
+      </div>
+    </section>
+
+    <section id="features" class="features container">
+      <h2>Features</h2>
+      <div class="features-grid">
+        <div class="card">
+          <h3>OR-Tools VRPTW</h3>
+          <p>Vehicle routing with time windows and capacity constraints.</p>
+        </div>
+        <div class="card">
+          <h3>Baseline vs Optimized</h3>
+          <p>Compare naive greedy routes against optimized solutions.</p>
+        </div>
+        <div class="card">
+          <h3>Interactive Maps</h3>
+          <p>Folium maps to explore “Before” and “After” routes.</p>
+        </div>
+        <div class="card">
+          <h3>KPIs & Export</h3>
+          <p>Distance, travel/service time, and downloadable JSON.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="how container">
+      <h2>How it works</h2>
+      <ol>
+        <li>Generate a mock scenario around a depot with customer demands and time windows.</li>
+        <li>Estimate distances and travel times from Haversine + average speed.</li>
+        <li>Run a greedy baseline and an OR-Tools optimization.</li>
+        <li>Visualize and compare KPIs and route maps.</li>
+      </ol>
+    </section>
+
+    <section id="get-started" class="get-started container">
+      <h2>Get started</h2>
+      <pre><code>pip install -r ../requirements.txt
+streamlit run ../src/app.py</code></pre>
+      <p>Once the dashboard is running, open <code>http://localhost:8501</code>. To generate artifacts via CLI:</p>
+      <pre><code>python ../src/run_pipeline.py</code></pre>
+      <p>Outputs will appear in <code>../outputs/</code>. If maps were generated, you can open:</p>
+      <ul>
+        <li><a href="../outputs/baseline_map.html" target="_blank" rel="noopener">Baseline Map</a></li>
+        <li><a href="../outputs/optimized_map.html" target="_blank" rel="noopener">Optimized Map</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="container">
+    <div class="footer">
+      <span>© <span id="year"></span> LPG Smart Route Optimizer</span>
+      <a href="https://developers.google.com/optimization/" target="_blank" rel="noopener">Google OR-Tools</a>
+    </div>
+  </footer>
+
+  <script>
+    // Update year
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // Try to load KPIs if served via HTTP and same-origin
+    fetch('../outputs/kpis.json')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        const base = data.baseline, opt = data.optimized;
+        const distRed = base.total_distance_km > 0 ?
+          100 * (base.total_distance_km - opt.total_distance_km) / base.total_distance_km : 0;
+        const timeRed = base.total_time_min > 0 ?
+          100 * (base.total_time_min - opt.total_time_min) / base.total_time_min : 0;
+        document.getElementById('kpi-distance').textContent = distRed.toFixed(1) + '%';
+        document.getElementById('kpi-time').textContent = timeRed.toFixed(1) + '%';
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>

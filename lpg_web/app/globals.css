@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+html, body, #__next { height: 100%; }
+
+body { background: theme('colors.background'); color: #000; }
+
+/* Card base */
+.card { @apply rounded-xl shadow-card bg-violet-500 text-black; }
+.dark .card { @apply bg-violet-600 text-black; }
+
+/* Subtle hover */
+.hover-card { @apply transition-shadow duration-200 hover:shadow-md; }

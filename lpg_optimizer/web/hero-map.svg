@@ -1,0 +1,24 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#5b8cff"/>
+      <stop offset="100%" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="16" fill="#0c1328"/>
+  <g opacity="0.55">
+    <path d="M40 60h560M40 120h560M40 180h560M40 240h560M40 300h560M40 360h560" stroke="#1c2644"/>
+    <path d="M80 40v340M160 40v340M240 40v340M320 40v340M400 40v340M480 40v340M560 40v340" stroke="#1c2644"/>
+  </g>
+  <circle cx="120" cy="300" r="6" fill="#111827" stroke="#5b8cff" stroke-width="3"/>
+  <text x="132" y="304" font-size="12" fill="#a8b3cf">Depot</text>
+  <g>
+    <circle cx="420" cy="260" r="5" fill="#4ade80"/>
+    <circle cx="500" cy="180" r="5" fill="#4ade80"/>
+    <circle cx="360" cy="120" r="5" fill="#4ade80"/>
+    <circle cx="260" cy="220" r="5" fill="#4ade80"/>
+    <circle cx="190" cy="140" r="5" fill="#4ade80"/>
+  </g>
+  <path d="M120 300C200 300 230 260 260 220C300 170 340 170 360 120C380 80 450 190 500 180C560 170 520 240 420 260" stroke="url(#g)" stroke-width="4" fill="none"/>
+  <text x="40" y="32" font-size="18" fill="#e7efff" font-weight="600">Before ➜ After Route Sketch</text>
+</svg>
