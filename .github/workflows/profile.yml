@@ -1,0 +1,32 @@
+name: Profile README Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday at 06:00 UTC
+
+jobs:
+  update-profile-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Update README timestamp
+        run: |
+          TS=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          echo "Last updated: $TS" > .github/profile/.last-updated
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .github/profile/.last-updated
+          git commit -m "chore: update profile timestamp"
+          git push
